@@ -23,6 +23,6 @@ class Employee {
 
 module.exports = Employee;
 
-const rayna = new Employee("Rayna", 1, "rayna.v@outlook.com");
+// const rayna = new Employee("Rayna", 1, "rayna.v@outlook.com");
 
 
