@@ -10,7 +10,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 const Employee = require("./lib/Employee");
-
+const employees = [];
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -116,27 +116,27 @@ function init() {
         ])
 
         .then((data) => {
-            const employees = [];
-            if (data.role === "Manager") {
-                const newEmployee = new Manager(data.name, data.id, data.email, data.officeNumber)
-                employees.push(newEmployee);
-            } else if (data.role === "Engineer") {
-                const newEmployee = new Engineer(data.name, data.id, data.email, data.github)
-                employees.push(newEmployee);
-            } else {
-                const newEmployee = new Intern(data.name, data.id, data.email, data.school)
-                employees.push(newEmployee);
-            }
 
-            console.log(employees[0].getRole())
+            let newEmployee;
+            if (data.role === "Manager") {
+                newEmployee = new Manager(data.name, data.id, data.email, data.officeNumber)
+                // employees.push(newEmployee);
+            } else if (data.role === "Engineer") {
+                newEmployee = new Engineer(data.name, data.id, data.email, data.github)
+                // employees.push(newEmployee);
+            } else {
+                newEmployee = new Intern(data.name, data.id, data.email, data.school)
+
+            }
+            employees.push(newEmployee);
+
+            employees.forEach(item => console.log(item))
             if (data.newEmployee) {
                 init()
             } else {
                 const fileName = `team.json`;
                 writeToFile(fileName, employees);
-                ;
             }
-
         })
 }
 
