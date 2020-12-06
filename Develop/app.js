@@ -9,31 +9,54 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const Employee = require("./lib/Employee");
 
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-const fs = require('fs');
-const inquirer = require('inquirer');
-
-// array of questions for user
-const questions = ['What is the name of your project or repo?',
-    'What is your motivation behind this app?',
-    'How do you use this app?',
-    'How is this app installed?',
-    'Enter link or path to image or gif of app.',
-    'Enter alt text for that image or gif.',
-    'What is your GitHub Repo URL?',
-    'What is the live URL?',
-    'How can a user report issues?',
-    'How can a user make contributions?',
-];
-
 
 // function to dynamically write README file
-function writeToFile(fileName, data) {
+function writeToFile(fileName, employees) {
+    // render(employees)
+    let fileContent = render(employees);
+    fs.writeFile(outputPath, fileContent, (err) => {
+        if (err) throw err;
+        console.log("team.html created! Success!")
+    })
     const userResponse = `
-
+    <!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>My Team</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/c502137733.js"></script>
+    </head>
+    
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 jumbotron mb-3 team-heading">
+                    <h1 class="text-center">My Team</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="team-area col-12 d-flex justify-content-center">
+                    {{ team }}
+                </div>
+            </div>
+        </div>
+    </body>
+    
+    </html>
+    
     `
     // writing file on fs using 'userResponse' and logging and console.logging either an error or 'complete'
     fs.writeFile('team.html', userResponse, (err) =>
@@ -42,88 +65,83 @@ function writeToFile(fileName, data) {
 }
 
 function init() {
-    // constructor functions for Inquirer prompts to run in command-line
-    function Prompts(type, message, name) {
-        this.type = type;
-        this.message = message;
-        this.name = name;
-    }
-    // new prompts
-    const question1 = new Prompts('input', questions[0], 'repoName')
-    const question2 = new Prompts('input', questions[1], 'motivation')
-    const question3 = new Prompts('input', questions[2], 'howToUse')
-    const question4 = new Prompts('input', questions[3], 'installation')
-    const question5 = new Prompts('input', questions[4], 'imageLink')
-    const question6 = new Prompts('input', questions[5], 'imageAlt')
-    const question7 = new Prompts('input', questions[6], 'gitHubURL')
-    const question8 = new Prompts('input', questions[7], 'liveURL')
-    const question9 = new Prompts('input', questions[8], 'reportIssues')
-    const question10 = new Prompts('input', questions[9], 'contribute')
-
 
     inquirer
         .prompt([
-            {
-                type: question1.type,
-                message: question1.message,
-                name: question1.name,
-            },
-            {
-                type: question2.type,
-                message: question2.message,
-                name: question2.name,
-            },
-            {
-                type: question3.type,
-                message: question3.message,
-                name: question3.name,
-            },
-            {
-                type: question4.type,
-                message: question4.message,
-                name: question4.name,
-            },
-            {
-                type: question5.type,
-                message: question5.message,
-                name: question5.name,
-            },
-            {
-                type: question6.type,
-                message: question6.message,
-                name: question6.name,
-            },
-            {
-                type: question7.type,
-                message: question7.message,
-                name: question7.name,
-            },
-            {
-                type: question8.type,
-                message: question8.message,
-                name: question8.name,
-            },
-            {
-                type: question9.type,
-                message: question9.message,
-                name: question9.name,
-            },
-            {
-                type: question10.type,
-                message: question10.message,
-                name: question10.name,
-            },
 
+            {// name
+                type: 'input',
+                message: 'Enter the name of the employee',
+                name: 'name',
+            },
+            {// id
+                type: 'input',
+                message: 'Enter the new employee id',
+                name: 'id',
+            },
+            { //email
+                type: 'input',
+                message: 'Enter the new employee email',
+                name: 'email',
+            },
+            { // role
+                type: 'list',
+                message: 'Select role for new employee:',
+                choices: ["Manager", "Engineer", "Intern"],
+                name: 'role',
+            },
+            {
+                type: 'input',
+                when: (answers) => answers.role === 'Manager',
+                message: 'Enter new manager\'s office number',
+                name: 'officeNumber',
+            },
+            {
+                type: 'input',
+                when: (answers) => answers.role === 'Engineer',
+                message: 'Enter new engineer\'s Github profile name',
+                name: 'github',
+            },
+            {
+                type: 'input',
+                when: (answers) => answers.role === 'Intern',
+                message: 'Enter new interns\'s school',
+                name: 'school',
+            },
+            {// enter new employee?
+                type: 'confirm',
+                message: 'Would you like to enter another new employee?',
+                name: 'newEmployee',
+            },
         ])
-        // returned data is then used to write to json file and READMe Markdown
-        .then((data) => {
-            const fileName = `${data.repoName.toLowerCase().split(" ").join("-")}.json`;
-            writeToFile(fileName, data);
-        })
 
+        .then((data) => {
+            const employees = [];
+            if (data.role === "Manager") {
+                const newEmployee = new Manager(data.name, data.id, data.email, data.officeNumber)
+                employees.push(newEmployee);
+            } else if (data.role === "Engineer") {
+                const newEmployee = new Engineer(data.name, data.id, data.email, data.github)
+                employees.push(newEmployee);
+            } else {
+                const newEmployee = new Intern(data.name, data.id, data.email, data.school)
+                employees.push(newEmployee);
+            }
+
+            console.log(employees[0].getRole())
+            if (data.newEmployee) {
+                init()
+            } else {
+                const fileName = `team.json`;
+                writeToFile(fileName, employees);
+                ;
+            }
+
+        })
 }
 
 // function call to initialize program
+
 init();
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
