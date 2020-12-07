@@ -12,8 +12,6 @@ const render = require("./lib/htmlRenderer");
 const Employee = require("./lib/Employee");
 const employees = [];
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
 
 // function to dynamically write README file
 function writeToFile(fileName, employees) {
@@ -44,6 +42,15 @@ function init() {
                 type: 'input',
                 message: 'Enter the new employee email',
                 name: 'email',
+                validate: function (email) {
+                    valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+                    if (valid) {
+                        return true;
+                    } else {
+                        console.log(" Please enter a valid email. ");
+                        return false;
+                    }
+                }
             },
             { // role
                 type: 'list',

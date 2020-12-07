@@ -1,7 +1,22 @@
-# Unit 10 OOP Homework: Template Engine - Employee Summary
+# Unit 10 [OOP Homework]: Template Engline - Team Generator
 
-One of the most important aspects of programming is writing code that is readable, reliable, and maintainable. Oftentimes, *how* we design our code is just as important as the code itself. In this homework assignment, your challenge is to build a Node CLI that takes in information about employees and generates an HTML webpage that displays summaries for each person. Since testing is a key piece in making code maintainable, you will also be ensuring that all unit tests pass.
+## Motivation
+The presented challenge was to build a Node CLI that takes in information about employees and dynamically generates an HTML page to display certain information about the team members based on their role (a mix of a manager along with engineers and interns). This was my first taste of unit tests which I found to be very helpful and a great way to start off. 
 
+## How to Use
+This app uses the following dependencies: [Inquirer](https://www.npmjs.com/package/inquirer) for collecting user input and [Jest](https://jestjs.io/) for running tests. To run the app, enter 'node app.js' in the terminal and answer the questions. When finished, the generated team.html can be found in the 'output' directory.
+
+## Mock-Up
+![Employee Summary](./Assets/Screenshot.PNG)
+
+## Deployment
+* Link to [GitHub Repository](https://github.com/rayna-v/Team-Generator)
+* Link to [Live URL](https://drive.google.com/file/d/13aGVa1HXOVVszhpGVgzWjLzAxTaa-lGr/view)
+
+
+# Requirements  
+The following was provided to me by University of Denver Full-Stack Coding Bootcamp:
+```
 
 ## Instructions
 
@@ -22,7 +37,6 @@ How do you deliver this? Here are some guidelines:
 * Below is an example of what your application may look like. Remember, the styling is completely up to you so try to make it unique.
 
 ![Employee Summary 1](./Assets/10-OOP-homework-demo-1.png)
-![Employee Summary 2](./Assets/10-OOP-homework-demo-2.png)
 
 In the `Develop` folder, there is a `package.json`, so make sure to `npm install`.
 
@@ -57,17 +71,12 @@ app.js         // Runs the application
 * Create multiple HTML templates for each type of user. For example, you could use the following templates:
 
   * `main.html`
-
   * `engineer.html`
-  
   * `intern.html`
-  
   * `manager.html`
 
 * You will want to make your methods as pure as possible. This means try to make your methods simple so that they are easier to test.
-
 * The different employee types should all inherit some methods and properties from a base class of `Employee`.
-
 * In your HTML template files, you may want to add a placeholder character that helps your program identify where the dynamic markup begins and ends.
 
 ## Minimum Requirements
